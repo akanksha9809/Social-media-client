@@ -9,27 +9,34 @@ import store from "../redux/store";
 import { setLoading, showToast } from "../redux/slices/appConfigSlice";
 import { TOAST_FAILURE } from "../App";
 
+let baseURL = "http://localhost:4000/";
+console.log("env is ", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+  baseURL = process.env.REACT_APP_SERVER_BASE_URL;
+}
+
 export const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+  baseURL,
   withCredentials: true,
 });
 
 axiosClient.interceptors.request.use((request) => {
-  const access_token = getItem(KEY_ACCESS_TOKEN);
-  request.headers["Authorization"] = `Bearer ${access_token}`;
+  const accessToken = getItem(KEY_ACCESS_TOKEN);
+  request.headers["Authorization"] = `Bearer ${accessToken}`;
   store.dispatch(setLoading(true));
+
   return request;
 });
 
 axiosClient.interceptors.response.use(
-  async (response) => {
+  async (respone) => {
     store.dispatch(setLoading(false));
-    const data = response.data;
+    const data = respone.data;
     if (data.status === "ok") {
       return data;
     }
 
-    const originalRequest = response.config; // it contains api which is called
+    const originalRequest = respone.config;
     const statusCode = data.statusCode;
     const error = data.message;
 
@@ -41,14 +48,14 @@ axiosClient.interceptors.response.use(
     );
 
     if (statusCode === 401 && !originalRequest._retry) {
-      //accessToken expired
+      // means the access token has expired
       originalRequest._retry = true;
+
       const response = await axios
         .create({
           withCredentials: true,
         })
-        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`); //silently calling refresh api
-      console.log("response from backend", response);
+        .get(`${baseURL}/auth/refresh`);
 
       if (response.data.status === "ok") {
         setItem(KEY_ACCESS_TOKEN, response.data.result.accessToken);
@@ -58,13 +65,11 @@ axiosClient.interceptors.response.use(
 
         return axios(originalRequest);
       } else {
-        // means refresh token expires => logout
-        removeItem(KEY_ACCESS_TOKEN); //from local storage
-        window.location.replace("./login", "_self"); //redirect to login
+        removeItem(KEY_ACCESS_TOKEN);
+        window.location.replace("/login", "_self");
         return Promise.reject(error);
       }
     }
-
     return Promise.reject(error);
   },
   async (error) => {

@@ -16,7 +16,7 @@ function Post({ post }) {
     dispatch(
       showToast({
         type: TOAST_SUCCESS,
-        message: "liked or unliked",
+         message: post.isLiked? "Unliked" : "Liked",
       })
     );
     dispatch(

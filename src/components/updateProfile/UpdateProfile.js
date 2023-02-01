@@ -3,6 +3,9 @@ import "./UpdateProfile.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading, updateMyProfile } from "../../redux/slices/appConfigSlice";
 import dummyUserImg from "../../assets/user.png";
+import { axiosClient } from "../../utils/axiosClient";
+import { useNavigate } from "react-router";
+import { KEY_ACCESS_TOKEN, removeItem } from "../../utils/localStorageManager";
 
 function UpdateProfile() {
   const myProfile = useSelector((state) => state.appConfigReducer.myProfile);
@@ -10,6 +13,7 @@ function UpdateProfile() {
   const [bio, setBio] = useState("");
   const [userImg, setUserImg] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setName(myProfile?.name || "");
@@ -24,7 +28,7 @@ function UpdateProfile() {
     fileReader.onload = () => {
       if (fileReader.readyState === fileReader.DONE) {
         setUserImg(fileReader.result);
-        console.log("img data", fileReader.result);
+        // console.log("img data", fileReader.result);
       }
     };
   }
@@ -38,6 +42,16 @@ function UpdateProfile() {
         userImg,
       })
     );
+  }
+
+  async function handleDeleteAccount() {
+    try {
+      await axiosClient.delete("/user/deleteMyProfile");
+      removeItem(KEY_ACCESS_TOKEN);
+      navigate("/signup");
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -78,7 +92,12 @@ function UpdateProfile() {
             />
           </form>
 
-          <button className="delete-account btn-primary">Delete Account</button>
+          <button
+            className="delete-account btn-primary"
+            onClick={handleDeleteAccount}
+          >
+            Delete Account
+          </button>
         </div>
       </div>
     </div>

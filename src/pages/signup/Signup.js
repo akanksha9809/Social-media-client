@@ -20,7 +20,7 @@ function Signup() {
         password,
       });
       navigate("/login");
-      console.log(result);
+      // console.log(result);
     } catch (e) {
       console.log(e);
     }

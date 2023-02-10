@@ -44,15 +44,15 @@ function UpdateProfile() {
     );
   }
 
-  async function handleDeleteAccount() {
+  const handleDelete = async () => {
     try {
-      await axiosClient.delete("/user/deleteMyProfile");
-      removeItem(KEY_ACCESS_TOKEN);
-      navigate("/signup");
-    } catch (e) {
-      console.log(e);
+        await axiosClient.delete("/user/deleteMyProfile");
+        removeItem(KEY_ACCESS_TOKEN);
+        navigate("/login");
+    } catch (err) {
+        console.log(err);
     }
-  }
+};
 
   return (
     <div className="UpdateProfile">
@@ -94,7 +94,7 @@ function UpdateProfile() {
 
           <button
             className="delete-account btn-primary"
-            onClick={handleDeleteAccount}
+            onClick={handleDelete}
           >
             Delete Account
           </button>

@@ -20,7 +20,7 @@ export const likeAndUnlikePost = createAsyncThunk(
   async (body) => {
     try {
       const response = await axiosClient.post("/posts/like", body);
-      console.log(response);
+      // console.log(response);
       return response.result.post;
     } catch (e) {
       return Promise.reject(e);
@@ -41,7 +41,7 @@ const postSlice = createSlice({
       })
       .addCase(likeAndUnlikePost.fulfilled, (state, action) => {
         const post = action.payload;
-        console.log("like post", post);
+        // console.log("like post", post);
         const index = state?.userProfile?.posts?.findIndex(
           (item) => item._id === post._id
         );

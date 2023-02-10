@@ -38,12 +38,12 @@ function Post({ post }) {
       <div className="content">
         <img src={post?.image?.url} alt="" />
       </div>
-      <div className="footer" onClick={handlePostLiked}>
+      <div className="footer" >
         <div className="like">
           {post.isLiked ? (
-            <AiFillHeart style={{ color: "red" }} className="icon" />
+            <AiFillHeart style={{ color: "red" }} className="icon" onClick={handlePostLiked}/>
           ) : (
-            <AiOutlineHeart className="icon" />
+            <AiOutlineHeart className="icon" onClick={handlePostLiked}/>
           )}
 
           <h4>{`${post.likesCount} likes`}</h4>

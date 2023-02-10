@@ -9,21 +9,32 @@
     gap: 20px;
     overflow: hidden;
     height: 100%;
-  }
-  .left-part {
-    flex: 2;
-    overflow-y: auto;
-  }
-  .right-part {
-    flex: 1;
-    margin-top: 20px;
-  }
 
-  .suggestions {
-    margin-top: 40px;
-  }
-
-  .title {
-    margin-bottom: 12px;
+    .left-part {
+      flex: 2;
+      overflow-y: auto;
+    }
+    .right-part {
+      flex: 1;
+      margin-top: 20px;
+      .title {
+        margin-bottom: 12px;
+        position: fixed;
+        background-color: white;
+        width: 100%;
+        padding: 5px;
+      }
+      .user-list {
+        margin-top: 30px;
+      }
+      .following {
+        overflow-y: auto;
+        max-height: 275px;
+      }
+      .suggestions {
+        height: 275px;
+        overflow-y: auto;
+      }
+    }
   }
 }

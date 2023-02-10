@@ -51,7 +51,11 @@ function Profile() {
         </div>
         <div className="right-part">
           <div className="profile-card">
-            <img className="user-img" src={userProfile?.avatar?.url} alt="" />
+            <img
+              className="user-img"
+              src={userProfile?.avatar?.url || userImg}
+              alt=""
+            />
             <h3 className="user-name">{userProfile?.name}</h3>
             <p className="bio">{userProfile?.bio}</p>
             <div className="follower-info">

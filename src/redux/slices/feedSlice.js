@@ -6,7 +6,7 @@ import { likeAndUnlikePost } from "./postSlice";
 export const getFeedData = createAsyncThunk("user/getFeedData", async () => {
   try {
     const response = await axiosClient.get("/user/getFeedData");
-    console.log(response);
+    // console.log(response);
     return response.result;
   } catch (e) {
     return Promise.reject(e);
@@ -18,6 +18,7 @@ export const followAndUnfollwUser = createAsyncThunk(
   async (body) => {
     try {
       const response = await axiosClient.post("/user/follow", body);
+      // window.location.reload(true);
       return response.result.user;
     } catch (e) {
       return Promise.reject(e);
@@ -38,7 +39,7 @@ const feedSlice = createSlice({
       })
       .addCase(likeAndUnlikePost.fulfilled, (state, action) => {
         const post = action.payload;
-        console.log("like post", post);
+        // console.log("like post", post);
         const index = state?.feedData?.posts.findIndex(
           (item) => item._id === post._id
         );
